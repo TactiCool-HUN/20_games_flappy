@@ -1,0 +1,107 @@
+[gd_scene load_steps=14 format=3 uid="uid://cbx082qfxpklg"]
+
+[ext_resource type="Script" path="res://scripts/game_controller.gd" id="1_ci2lp"]
+[ext_resource type="PackedScene" uid="uid://d3nbt258mqvat" path="res://scenes/player.tscn" id="2_3ap3w"]
+[ext_resource type="Texture2D" uid="uid://bvabywaq66m7e" path="res://assets/Clouds/Clouds 1/1.png" id="2_yso8f"]
+[ext_resource type="PackedScene" uid="uid://dpcgfo8g8630" path="res://scenes/death_zone.tscn" id="3_qk43j"]
+[ext_resource type="Script" path="res://scripts/exit_field.gd" id="4_7m2wn"]
+[ext_resource type="PackedScene" uid="uid://btmh4fbkw3nfd" path="res://scenes/HUD.tscn" id="5_2r2gf"]
+[ext_resource type="Script" path="res://scripts/wind.gd" id="5_ngsa8"]
+[ext_resource type="Script" path="res://scripts/timer.gd" id="6_tak1r"]
+[ext_resource type="Texture2D" uid="uid://gdob007ocq04" path="res://assets/Clouds/Clouds 1/2.png" id="6_tv35k"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mkmbl"]
+size = Vector2(98, 1092.5)
+
+[sub_resource type="Curve" id="Curve_428us"]
+min_value = -200.0
+max_value = 200.0
+_data = [Vector2(0, -200), 0.0, 0.0, 0, 0, Vector2(0.252809, 200), -14.2258, -14.2258, 0, 0, Vector2(0.752809, 200), 0.0, 0.0, 0, 0, Vector2(1, -200), 0.0, 0.0, 0, 0]
+point_count = 4
+
+[sub_resource type="Curve" id="Curve_jl0pq"]
+_data = [Vector2(0.011236, 1), 0.0, 0.0, 0, 0, Vector2(0.494382, 0.813187), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_wfccm"]
+_data = [Vector2(0.0842697, 0.186813), 0.0, 0.0, 0, 0, Vector2(0.5, 0.0879121), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[node name="Game" type="Node2D" node_paths=PackedStringArray("bird_spawner")]
+script = ExtResource("1_ci2lp")
+bird_spawner = NodePath("World/Bird Spawner")
+
+[node name="World" type="Node2D" parent="."]
+
+[node name="BackgroundSprite" type="Sprite2D" parent="World"]
+position = Vector2(572, 322.5)
+scale = Vector2(2.04861, 2.07716)
+texture = ExtResource("2_yso8f")
+
+[node name="BackgroundParallax" type="Parallax2D" parent="World"]
+repeat_size = Vector2(555, 0)
+autoscroll = Vector2(-50, 0)
+repeat_times = 4
+
+[node name="ParallaxSprite" type="Sprite2D" parent="World/BackgroundParallax"]
+position = Vector2(703, 484)
+texture = ExtResource("6_tv35k")
+
+[node name="Player" parent="World" instance=ExtResource("2_3ap3w")]
+
+[node name="DeathZone" parent="World" instance=ExtResource("3_qk43j")]
+position = Vector2(714, 792)
+scale = Vector2(75, 10)
+
+[node name="DeathZone2" parent="World" instance=ExtResource("3_qk43j")]
+position = Vector2(709, -165)
+scale = Vector2(75, 10)
+
+[node name="ExitField" type="Area2D" parent="World"]
+script = ExtResource("4_7m2wn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/ExitField"]
+position = Vector2(-103, 320.75)
+shape = SubResource("RectangleShape2D_mkmbl")
+
+[node name="Bird Spawner" type="Marker2D" parent="World"]
+
+[node name="Wind" type="CPUParticles2D" parent="World"]
+amount = 30
+lifetime = 2.0
+explosiveness = 0.3
+emission_shape = 3
+emission_rect_extents = Vector2(1, 1)
+direction = Vector2(-1, 0)
+spread = 0.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 400.0
+initial_velocity_max = 400.0
+linear_accel_curve = SubResource("Curve_428us")
+scale_amount_min = 10.0
+scale_amount_max = 14.0
+split_scale = true
+scale_curve_x = SubResource("Curve_jl0pq")
+scale_curve_y = SubResource("Curve_wfccm")
+script = ExtResource("5_ngsa8")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.8
+autostart = true
+script = ExtResource("6_tak1r")
+
+[node name="Timer2" type="Timer" parent="."]
+wait_time = 0.9
+autostart = true
+script = ExtResource("6_tak1r")
+
+[node name="HUD" parent="." node_paths=PackedStringArray("exit_field") instance=ExtResource("5_2r2gf")]
+exit_field = NodePath("../World/ExitField")
+
+[connection signal="player_died" from="." to="HUD" method="_on_game_player_died"]
+[connection signal="area_entered" from="World/ExitField" to="World/ExitField" method="_on_area_entered"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer"]
+[connection signal="timeout" from="Timer" to="Timer" method="_on_timeout"]
+[connection signal="timeout" from="Timer2" to="." method="_on_timer"]
+[connection signal="timeout" from="Timer2" to="Timer2" method="_on_timeout2"]
+[connection signal="restart_game" from="HUD" to="." method="_on_hud_restart_game"]

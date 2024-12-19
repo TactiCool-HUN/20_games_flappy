@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3 uid="uid://btmh4fbkw3nfd"]
+
+[ext_resource type="Script" path="res://scripts/hud.gd" id="1_gpc1r"]
+
+[node name="HUD" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gpc1r")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Score: 0"
+
+[node name="Deathscreen" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -23.5
+offset_right = 20.0
+offset_bottom = 23.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Deathscreen"]
+layout_mode = 2
+text = "You have died!"
+
+[node name="Restart" type="Button" parent="Deathscreen"]
+layout_mode = 2
+text = "Restart"
+
+[node name="Quit" type="Button" parent="Deathscreen"]
+layout_mode = 2
+text = "Quit"
+
+[connection signal="button_up" from="Deathscreen/Restart" to="." method="_on_restart_button_up"]
+[connection signal="button_up" from="Deathscreen/Quit" to="." method="_on_quit_button_up"]

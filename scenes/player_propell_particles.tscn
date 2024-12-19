@@ -1,0 +1,24 @@
+[gd_scene load_steps=2 format=3 uid="uid://u8gmvqao6xnr"]
+
+[ext_resource type="Script" path="res://scripts/player_propell_particles.gd" id="1_gmv3p"]
+
+[node name="PlayerPropellParticles" type="CPUParticles2D"]
+position = Vector2(-6, 15)
+rotation = 1.91986
+emitting = false
+amount = 50
+one_shot = true
+explosiveness = 0.85
+emission_shape = 4
+emission_points = PackedVector2Array(0, 10, 0, 5, 0, 0, 0, -5, 0, -10)
+emission_colors = PackedColorArray()
+spread = 20.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 400.0
+initial_velocity_max = 400.0
+scale_amount_min = 2.4
+scale_amount_max = 2.4
+color = Color(1, 0.809442, 0.777597, 1)
+script = ExtResource("1_gmv3p")
+
+[connection signal="finished" from="." to="." method="_on_finished"]

@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://d3nbt258mqvat"]
+
+[ext_resource type="Script" path="res://scripts/player.gd" id="1_206g4"]
+[ext_resource type="Texture2D" uid="uid://gq2gigbff620" path="res://assets/pipes_full.png" id="2_7avu6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ujvp"]
+atlas = ExtResource("2_7avu6")
+region = Rect2(256, 64, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gegw3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3ujvp")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_afx1x"]
+size = Vector2(30, 32)
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+script = ExtResource("1_206g4")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+rotation = 0.349066
+sprite_frames = SubResource("SpriteFrames_gegw3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 0.349066
+shape = SubResource("RectangleShape2D_afx1x")
+
+[node name="ParticleEmitor" type="Marker2D" parent="."]
+position = Vector2(-2, 9)

@@ -1,0 +1,100 @@
+[gd_scene load_steps=13 format=3 uid="uid://dj2ktnhmtec6l"]
+
+[ext_resource type="Script" path="res://scripts/bird.gd" id="1_riv72"]
+[ext_resource type="Texture2D" uid="uid://h5446kjhoi5" path="res://assets/BirdSprite.png" id="2_tkxc7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mg4uu"]
+atlas = ExtResource("2_tkxc7")
+region = Rect2(0, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xa2aa"]
+atlas = ExtResource("2_tkxc7")
+region = Rect2(16, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o33hd"]
+atlas = ExtResource("2_tkxc7")
+region = Rect2(32, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dq5wo"]
+atlas = ExtResource("2_tkxc7")
+region = Rect2(48, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5wga8"]
+atlas = ExtResource("2_tkxc7")
+region = Rect2(64, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gl47a"]
+atlas = ExtResource("2_tkxc7")
+region = Rect2(80, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n1nll"]
+atlas = ExtResource("2_tkxc7")
+region = Rect2(96, 16, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cntky"]
+atlas = ExtResource("2_tkxc7")
+region = Rect2(112, 16, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nr1lc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mg4uu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xa2aa")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o33hd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dq5wo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5wga8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gl47a")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n1nll")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cntky")
+}],
+"loop": true,
+"name": &"default",
+"speed": 8.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_r28y0"]
+radius = 5.0
+height = 20.0
+
+[node name="Bird" type="Area2D" groups=["death_zone"]]
+script = ExtResource("1_riv72")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(1.3, 1.3)
+sprite_frames = SubResource("SpriteFrames_nr1lc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_r28y0")
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 36
+lifetime = 0.25
+one_shot = true
+explosiveness = 0.9
+lifetime_randomness = 0.2
+spread = 180.0
+gravity = Vector2(0, 0)
+initial_velocity_min = 300.0
+initial_velocity_max = 300.0
+scale_amount_min = 2.0
+scale_amount_max = 2.0
+color = Color(0.999995, 0.287375, 0.328663, 1)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
